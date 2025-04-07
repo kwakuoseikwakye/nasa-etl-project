@@ -29,6 +29,6 @@ def fetch_apod_data(start_date: str, end_date: str) -> list:
         return []
 
 def get_last_30_days_apod() -> list:
-    today = datetime.utcnow().date()
+    today = datetime.now(datetime.timezone.utc).date()
     thirty_days_ago = today - timedelta(days=30)
     return fetch_apod_data(thirty_days_ago.isoformat(), today.isoformat())
