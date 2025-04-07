@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+pandas
+sqlalchemy
+psycopg2-binary
+boto3
+python-dotenv
+opencv-python
+pillow
