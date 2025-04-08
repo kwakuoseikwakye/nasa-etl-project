@@ -5,6 +5,7 @@ from app.services.nasa_neo import get_last_30_days_neo
 from app.services.mars_rover import get_last_30_days_mars_photos
 from app.services.transformer import transform_apod_data, transform_neo_data, transform_mars_photos
 from app.services.transformer import integrate_datasets
+from app.services.loader import load_apod, load_neo, load_mars
 
 app = FastAPI(title="NASA ETL Microservice")
 
@@ -61,3 +62,19 @@ def get_integrated_data():
         "sample_merged": merged_sample,
         "record_count": len(integrated["merged"])
     }
+    
+@app.post("/load")
+def load_all_data():
+    apod_raw = get_last_30_days_apod()
+    neo_raw = get_last_30_days_neo()
+    mars_raw = get_last_30_days_mars_photos()
+
+    apod_df = transform_apod_data(apod_raw)
+    neo_df = transform_neo_data(neo_raw)
+    mars_df = transform_mars_photos(mars_raw)
+
+    load_apod(apod_df)
+    load_neo(neo_df)
+    load_mars(mars_df)
+
+    return {"status": "Data loaded into RDS successfully!"}
