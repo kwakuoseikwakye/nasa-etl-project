@@ -2,12 +2,11 @@ import pandas as pd
 from datetime import datetime
 from app.utils.logger import logger
 
-# --- APOD Transformer ---
 def transform_apod_data(raw_data: list) -> pd.DataFrame:
     logger.info("Transforming APOD data...")
     df = pd.DataFrame(raw_data)
 
-    df = df[df["media_type"] == "image"]  # Filter out videos
+    df = df[df["media_type"] == "image"]
     df["date"] = pd.to_datetime(df["date"])
     df = df.drop_duplicates(subset=["date"])
 
@@ -19,7 +18,6 @@ def transform_apod_data(raw_data: list) -> pd.DataFrame:
 
     return df
 
-# --- NeoWs Transformer ---
 def transform_neo_data(raw_data: list) -> pd.DataFrame:
     logger.info("Transforming NEO (asteroid) data...")
     df = pd.DataFrame(raw_data)
@@ -44,7 +42,6 @@ def transform_neo_data(raw_data: list) -> pd.DataFrame:
 
     return df
 
-# --- Mars Rover Transformer ---
 def transform_mars_photos(raw_data: list) -> pd.DataFrame:
     logger.info("Transforming Mars Rover photo data...")
     df = pd.DataFrame(raw_data)
@@ -59,22 +56,18 @@ def transform_mars_photos(raw_data: list) -> pd.DataFrame:
     df.drop_duplicates(subset=["id"], inplace=True)
     return df
 
-# At the bottom of transformer.py
 
 def integrate_datasets(apod_df: pd.DataFrame, neo_df: pd.DataFrame, mars_df: pd.DataFrame) -> dict:
     logger.info("Integrating datasets...")
 
-    # Normalize column names for merging
     apod_df["date"] = pd.to_datetime(apod_df["date"])
     neo_df["close_approach_date"] = pd.to_datetime(neo_df["close_approach_date"])
     mars_df["earth_date"] = pd.to_datetime(mars_df["earth_date"])
 
-    # Rename for clarity before merge
     apod = apod_df.rename(columns={"date": "event_date"})
     neo = neo_df.rename(columns={"close_approach_date": "event_date"})
     mars = mars_df.rename(columns={"earth_date": "event_date"})
 
-    # Use outer join to keep all data, even if no matching records
     merged_df = pd.merge(apod, neo, on="event_date", how="outer", suffixes=("_apod", "_neo"))
     merged_df = pd.merge(merged_df, mars, on="event_date", how="outer")
 
