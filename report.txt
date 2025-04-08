@@ -1,0 +1,29 @@
+## Challenges and Solutions
+
+### 1. Rate Limits from NASA APIs
+**Problem**: NASA APIs enforce rate limits which caused HTTP 429 errors during extraction.  
+**Solution**: Implemented retries with exponential backoff and limited requests per second.
+
+---
+
+### 2. Heterogeneous Data Formats
+**Problem**: APOD, NeoWs, and Mars Rover APIs return differently structured JSON with various nested fields.  
+**Solution**: Developed custom parsers per API, standardized all timestamps, and normalized nested structures.
+
+---
+
+### 3. Image Analysis at Scale
+**Problem**: Analyzing images from Mars Rover and APOD could lead to timeout or memory issues.  
+**Solution**: Resized and downsampled images before analysis; limited image metadata to dominant color and resolution.
+
+---
+
+### 4. Secure and Scalable Hosting
+**Problem**: Needed to expose an HTTP endpoint for image analysis without heavy AWS cost.  
+**Solution**: Used AWS Lightsail to host the FastAPI service with Nginx and Gunicorn, using a firewall for access control.
+
+---
+
+### 5. Error Resilience in ETL
+**Problem**: Glue jobs would silently fail if external services timed out.  
+**Solution**: Wrapped external API calls in try/except blocks with fallback values and logged errors to CloudWatch.

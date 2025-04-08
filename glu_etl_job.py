@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import logging
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+import requests
 
 import pandas as pd
 from app.services.extractor import (
@@ -35,6 +36,23 @@ def load_data(df, model):
         session.merge(model(**row.to_dict()))
     session.commit()
     session.close()
+    
+def analyze_image(image_url: str, service_url: str):
+    try:
+        response = requests.post(
+            f"{service_url}/analyze-image",
+            json={"url": image_url},
+            timeout=5  # fail fast
+        )
+        response.raise_for_status()
+        return response.json()
+    except Exception as e:
+        print(f"[WARN] Could not analyze image {image_url}: {e}")
+        return {
+            "width": None,
+            "height": None,
+            "dominant_color": None
+        }
 
 def run_etl():
     logger.info("Running ETL job...")
