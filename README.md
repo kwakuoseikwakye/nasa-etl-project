@@ -1,4 +1,4 @@
-# 🚀 NASA ETL Pipeline with FastAPI Microservice and AWS Integration
+#  NASA ETL Pipeline
 
 This project implements a complete ETL (Extract, Transform, Load) pipeline that integrates data from multiple NASA APIs, processes and enriches the data, and loads it into an AWS RDS database. The pipeline uses AWS Glue for orchestration and a FastAPI microservice hosted on AWS Lightsail for image analysis.
 
@@ -21,7 +21,7 @@ This project implements a complete ETL (Extract, Transform, Load) pipeline that 
 
 ##  Architecture Diagram
 
-![ETL Architecture](architecture.png)
+![ETL Architecture](arch.png)
 
 ---
 
@@ -35,7 +35,7 @@ This project implements a complete ETL (Extract, Transform, Load) pipeline that 
 
 ---
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### 1. Clone the Repo
 
