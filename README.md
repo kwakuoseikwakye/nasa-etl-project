@@ -65,7 +65,8 @@ python glue_etl_job.py
 
 ### 4. AWS Production
 - Commit and push to main branch
-# GitHub Actions will:
-      - Upload the Glue ETL script to S3
-      - Update the Glue Job with the new script
-      - Deploy/restart the lightsail microservice
+
+#### GitHub Actions will:
+- Upload the Glue ETL script to S3
+- Update the Glue Job with the new script
+- Deploy/restart the lightsail microservice
